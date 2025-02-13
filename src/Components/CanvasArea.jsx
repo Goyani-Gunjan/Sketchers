@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import ShapeFactory from "../Shapes/ShapeFactory";
+import shapeStore from "../Store/ShapeStore";
 
 // eslint-disable-next-line react/prop-types
 const CanvasArea = ({ drawShapes,setDrawShape }) => {
@@ -15,11 +16,12 @@ const CanvasArea = ({ drawShapes,setDrawShape }) => {
   const [clickCount, setClickCount] = useState(0); // For non-polyline shapes
   const [canDraw, setCanDraw] = useState(false); // ✅ Allow drawing only after navbar click
   const [isPolylineDrawing, setIsPolylineDrawing] = useState(false);
+
   
 
   useEffect(() => {
     const scene = sceneRef.current;
-
+    shapeStore.setScene(scene)
     // Setup Camera
     const camera = new THREE.PerspectiveCamera(
       75,

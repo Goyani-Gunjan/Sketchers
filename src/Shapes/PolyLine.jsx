@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import ShapeStore from "../Store/ShapeStore";
 
 class PolyLine {
   constructor(scene) {
@@ -74,6 +75,18 @@ class PolyLine {
       this.tempLine.geometry.dispose();
       this.tempLine = null;
     }
+
+     // Store polyline in history
+  if (this.points.length > 1) {
+    ShapeStore.addToHistory({
+      type: "PolyLine",
+      points: this.points.map(p => ({ x: p.x, y: p.y, z: p.z })), // Convert to plain object
+      shapeObject: this.line,
+      spheres : this.spheres,
+    });
+
+    console.log("Polyline stored:", this.points);
+  }
   }
 
   addSphere(position) {

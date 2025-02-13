@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import ShapeStore from "../Store/ShapeStore";
 
 class Ellipse {
   constructor(scene) {
@@ -23,7 +24,7 @@ class Ellipse {
     const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     this.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     this.sphere.position.copy(this.center);
-    this.scene.add(this.sphere);
+    // this.scene.add(this.sphere);
   }
 
   updateDrawing(point) {
@@ -62,7 +63,19 @@ class Ellipse {
 
   stopDrawing() {
     this.drawing = false;
-    // console.log(this.center.x, this.center.y, this.center.z , this.majorAxis , this.minorAxis)
+  
+    if (this.center && this.ellipseMesh) {
+      ShapeStore.addToHistory({
+        type: "Ellipse",
+        center: this.center,
+        majorAxis: this.majorAxis,
+        minorAxis: this.minorAxis,
+        shapeObject: this.ellipseMesh,
+        spheres : this.sphere,
+      });
+  
+      console.log("Ellipse stored:", { center: this.center, majorAxis: this.majorAxis, minorAxis: this.minorAxis });
+    }
   }
 }
 
